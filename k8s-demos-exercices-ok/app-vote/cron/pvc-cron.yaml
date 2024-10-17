@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-backup-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce  # Ce volume sera monté en lecture-écriture sur un seul nœud
+  resources:
+    requests:
+      storage: 1Gi  # Taille demandée pour le volume
+  storageClassName: standard  # Classe de stockage (si vous en avez une définie)

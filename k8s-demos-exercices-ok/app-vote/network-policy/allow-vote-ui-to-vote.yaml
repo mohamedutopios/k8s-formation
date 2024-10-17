@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-vote-ui-to-vote
+  namespace: vote
+spec:
+  podSelector:
+    matchLabels:
+      app: vote
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: vote-ui
+    ports:
+    - protocol: TCP
+      port: 5000  # Autorise uniquement le trafic sur le port 5000

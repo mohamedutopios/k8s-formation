@@ -1,0 +1,12 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-vote-ui
+  namespace: vote
+spec:
+  podSelector:
+    matchLabels:
+      app: vote-ui
+  policyTypes:
+  - Ingress
+  ingress: []

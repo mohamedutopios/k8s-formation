@@ -1,0 +1,23 @@
+apiVersion: v1                # Version de l'API Kubernetes utilisée
+kind: Pod                     # Type de ressource à créer
+metadata:                     # Métadonnées du Pod
+  name: exemple-pod           # Nom du Pod
+  labels:                     # Étiquettes pour organiser et sélectionner des objets
+    app: mon-application
+spec:                         # Spécifications du Pod
+  containers:                 # Liste des conteneurs dans le Pod
+  - name: mon-conteneur       # Nom du conteneur
+    image: mon-image          # Image du conteneur à exécuter
+    ports:                    # Ports réseau que le conteneur expose
+    - containerPort: 80
+    resources:                # Ressources CPU et mémoire demandées / limites
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    env:                      # Variables d'environnement pour le conteneur
+    - name: MA_VARIABLE
+      value: "ma_valeur"
+  restartPolicy: Always       # Politique de redémarrage du Pod

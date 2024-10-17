@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup
+spec:
+  schedule: "*/5 * * * *"  # Exécuter toutes les 5 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: postgres-backup
+            image: postgres:13.2-alpine
+            env:
+              - name: POSTGRES_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-secret  # Le nom du Secret
+                    key: POSTGRES_USER     # La clé dans le Secret
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-secret  # Le nom du Secret
+                    key: POSTGRES_PASSWORD # La clé dans le Secret
+              - name: POSTGRES_DB
+                value: postgres  # Spécifiez la base de données à sauvegarder
+            args:
+              - /bin/sh
+              - -c
+              - |
+                PGPASSWORD=$POSTGRES_PASSWORD pg_dump -U $POSTGRES_USER -h db $POSTGRES_DB > /backup/db-backup-$(date +\%Y-\%m-\%dT\%H:\%M).sql
+            volumeMounts:
+            - name: backup-volume
+              mountPath: /backup
+          restartPolicy: OnFailure
+          volumes:
+          - name: backup-volume
+            persistentVolumeClaim:
+              claimName: postgres-backup-pvc  # Utiliser le PVC ici

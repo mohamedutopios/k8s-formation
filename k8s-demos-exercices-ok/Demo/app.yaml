@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alex
+  labels:
+    app: alex
+spec:
+  containers:
+  - name: alex
+    image: alexwhen/docker-2048
+    ports:
+      - containerPort: 80

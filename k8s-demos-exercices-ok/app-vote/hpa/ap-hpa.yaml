@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ab-tester
+  namespace: vote
+spec:
+  containers:
+    - name: ab
+      image: jordi/ab
+      command: [ "sleep", "3600" ]
